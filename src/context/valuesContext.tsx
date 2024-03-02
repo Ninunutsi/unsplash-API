@@ -13,6 +13,8 @@ export const ValuesProvider: React.FC<{ children: React.ReactNode }> = ({
     const [singlePhoto, setSinglePhoto] = useState<ISinglePhoto | undefined>(undefined)
     const [modal, setModal] = useState<boolean>(false);
     const queryClient = useQueryClient();
+    const [historyQuery, setHistoryQuery] = useState<string>("")
+
 
     const handleClick = async (id: string, src: string, likes: number) => {
       // Check if data is already cached
@@ -50,7 +52,7 @@ export const ValuesProvider: React.FC<{ children: React.ReactNode }> = ({
   };
   return (
     <ValuesContext.Provider
-      value={{ searchQuery, setSearchQuery, page, setPage, handleClick, singlePhoto, modal, setModal, handleCloseModal }}
+      value={{ searchQuery, setSearchQuery, page, setPage, handleClick, singlePhoto, modal, setModal, handleCloseModal, historyQuery, setHistoryQuery }}
     >
       {children}
     </ValuesContext.Provider>
