@@ -9,8 +9,13 @@ const useFetch = (searchQuery: string | undefined, historyQuery?:string): [Unspl
   const [loading, setLoading] = useState<boolean>(false);
   const {page, setPage} = useValuesContext()
   const queryClient = useQueryClient();
-  console.log(historyQuery)
   const historyQueryRef = useRef<string | undefined>(historyQuery);
+  const pageRef = useRef<number>(page)
+  console.log(page, "1")
+  console.log(pageRef)
+  useEffect(() => {
+    pageRef.current = page; // Update pageRef.current whenever page changes
+  }, [page]);
   useEffect(() => {
     historyQueryRef.current = historyQuery; // Update the ref whenever historyQuery changes
   }, [historyQuery]);
@@ -20,24 +25,32 @@ const useFetch = (searchQuery: string | undefined, historyQuery?:string): [Unspl
       let res
       const currentHistoryQuery = historyQueryRef.current;
       if(searchQuery){
-          const cachedData = queryClient.getQueryData(['img', searchQuery, page]);
+          const cachedData = queryClient.getQueryData(['img', searchQuery, pageRef.current]);
         if (cachedData) {
           res = cachedData;
         } else {
-          res = await searchImages(searchQuery, page);
-          queryClient.setQueryData(['img', searchQuery, page], res);
+          res = await searchImages(searchQuery, pageRef.current);
+          queryClient.setQueryData(['img', searchQuery, pageRef.current], res);
         }
       }else if(currentHistoryQuery){
-          res = await searchImages(currentHistoryQuery, page)
+        const cachedData = queryClient.getQueryData(['img', currentHistoryQuery, pageRef.current]);
+        if (cachedData) {
+          res = cachedData;
+        } else {
+          res = await searchImages(currentHistoryQuery, pageRef.current);
+          queryClient.setQueryData(['img', currentHistoryQuery, pageRef.current], res);
+        }
       }else{
-          res = await getImagesByPage(page)
+          res = await getImagesByPage(pageRef.current)
         }
       const response = res
-      if (page === 1) {
+      if (pageRef.current === 1) {
         setImages(response);
       } else {
         setImages(prevImages => [...prevImages, ...response]);
       }
+      console.log(page, "trishi")
+
       setPage((prevPage: number) => prevPage + 1);
     } catch (error) {
       console.error('Error fetching images:', error);
@@ -49,6 +62,7 @@ const useFetch = (searchQuery: string | undefined, historyQuery?:string): [Unspl
   useEffect(() => {
     setImages([]);
     setPage(1); 
+    console.log(page, "useEffectshi")
   }, [searchQuery, historyQuery]);
 
   return [images, loading, fetchImages];

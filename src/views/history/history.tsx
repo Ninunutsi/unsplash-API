@@ -13,7 +13,6 @@ export const History = () => {
   const { handleClick, historyQuery, setHistoryQuery} = useValuesContext()
   const [images, loading, fetchImages] = useFetch(undefined, historyQuery);
   
-  // custom hook for infinite scrolling
   useInfiniteScroll(fetchImages, loading);
   
   const handleQueryClick = (query: string) => {

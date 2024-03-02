@@ -18,8 +18,12 @@ export const StyledImg = styled.img`
 `
 
 export const StyledLi = styled.li`
-margin: 5px;
-flex: 0 0 calc(14% );
-width: 200px;
-height: 200px;
+    margin: 5px;
+    flex: 0 0 calc(14% );
+    width: 200px;
+    height: 200px;
+`
+
+export const StyledGallery = styled.section`
+    overflow-y: hidden;
 `

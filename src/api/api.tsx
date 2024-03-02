@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { useQuery } from "react-query";
 import { ImageData } from "../interfaces/app.interface";
 
-const API_KEY = "fY5WYZ7VPopsu9HZ_aPhrKII-7slLoUxJEaiVx0QCIk"
+const API_KEY = "zjiQzG9EyFaOHOw_WxfSfWOnM5JJdyVwR-z5FLevdRM"
 
 export const getOneImage = async (id: string) => {
     try {

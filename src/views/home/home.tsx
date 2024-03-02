@@ -10,7 +10,7 @@ export const Home: React.FC = () => {
   const {searchQuery, setSearchQuery, handleClick} = useValuesContext()
   const [images, loading, fetchImages] = useFetch(searchQuery);
 
-  useInfiniteScroll(fetchImages, loading);
+    useInfiniteScroll(fetchImages, loading);
 
   useEffect(() => {
     const initialLoadDelay = searchQuery ? 1000 : 0;

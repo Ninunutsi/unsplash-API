@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyledImg, StyledLi, StyledUl } from './gallery.styled'
+import { StyledGallery, StyledImg, StyledLi, StyledUl } from './gallery.styled'
 import { Modal } from '../modal';
 import { ScrollToTopButton } from '../scroll-to-top-buttom';
 import { useValuesContext } from '../../context/valuesContext';
@@ -8,7 +8,7 @@ import { IGallery } from '../../interfaces/app.interface';
 export const Gallery:React.FC<IGallery> = ({images, handleClick}) => {
   const { singlePhoto, modal,handleCloseModal} = useValuesContext()
   return (
-    <>
+    <StyledGallery>
       {modal && <Modal onClick={handleCloseModal} data={singlePhoto}/>}
        <ScrollToTopButton/>
     <StyledUl>
@@ -19,6 +19,6 @@ export const Gallery:React.FC<IGallery> = ({images, handleClick}) => {
             </StyledLi>
           ))}
         </StyledUl>
-    </>
+    </StyledGallery>
   )
 }
