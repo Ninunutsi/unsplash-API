@@ -1,22 +1,13 @@
 import { useState, useEffect } from 'react';
 import { searchImages, getImagesByPage } from '../api/api';
 import { useValuesContext } from '../context/valuesContext';
-
-interface UnsplashImage {
-  id: string;
-  urls: {
-    regular: string;
-    full: string
-  };
-  likes: number
-}
+import { UnsplashImage } from '../interfaces/app.interface';
 
 const useFetch = (searchQuery: string): [UnsplashImage[], boolean, () => void] => {
   const [images, setImages] = useState<UnsplashImage[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const {page, setPage} = useValuesContext()
 
-  
   const fetchImages = async () => {
     setLoading(true);
     try {

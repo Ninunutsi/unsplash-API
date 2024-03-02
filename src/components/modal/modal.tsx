@@ -5,20 +5,15 @@ import {
   StyledClose,
   StyledTexts,
 } from "./modal.styled";
-
-export interface ISinglePhoto {
-  downloads:number
-  likes:number
-  src: string
-  views: number
-}
-
-interface IModal {
-  data: ISinglePhoto | undefined
-  onClick: () => void;
-}
+import { IModal } from "../../interfaces/app.interface";
 
 export const Modal: React.FC<IModal> = ({ onClick, data}) => {
+  const { downloads, likes, src, views } = data || {
+    downloads: 0,
+    likes: 0,
+    src: "",
+    views: 0,
+  };
   const handleContentClick = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
   };
@@ -26,10 +21,10 @@ export const Modal: React.FC<IModal> = ({ onClick, data}) => {
   return (
     <StyledCDPopup onClick={onClick}>
       <StyledCDContainer onClick={handleContentClick}>
-        <StyledTexts><p>Downloads: {data?.downloads}</p>
-        <p>Views: {data?.views}</p>
-        <p>Likes: {data?.likes}</p></StyledTexts>
-       <img src={data?.src} alt="" />
+        <StyledTexts><p>Downloads: {downloads}</p>
+        <p>Views: {views}</p>
+        <p>Likes: {likes}</p></StyledTexts>
+       <img src={src} alt="" />
         <StyledClose onClick={onClick} id="close">
           &times;
         </StyledClose>

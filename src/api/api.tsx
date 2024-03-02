@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_KEY = "W1f5oCFfBmWeO-3lMM15YRi6s_Qpw4OM0gT6UjPtGjU"
+const API_KEY = "fY5WYZ7VPopsu9HZ_aPhrKII-7slLoUxJEaiVx0QCIk"
 
 export const getOneImage = async (id: string) => {
     try {
