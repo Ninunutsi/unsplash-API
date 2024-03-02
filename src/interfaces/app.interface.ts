@@ -28,3 +28,8 @@ export interface UnsplashImage {
   };
   likes: number
 }
+
+export interface IGallery {
+  images: UnsplashImage[]
+  handleClick: (id: string, full: string, likes: number) => void
+}

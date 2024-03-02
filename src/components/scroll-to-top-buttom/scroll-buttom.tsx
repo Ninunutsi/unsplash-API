@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StyledScrollButton } from './scroll-buttom.styled';
+import { useValuesContext } from '../../context/valuesContext';
 
 export const ScrollToTopButton: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const {setModal} = useValuesContext()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,12 +19,12 @@ export const ScrollToTopButton: React.FC = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      setModal(false)
   };
 
   return (

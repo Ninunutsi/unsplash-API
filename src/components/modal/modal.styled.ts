@@ -9,7 +9,7 @@ export const StyledBTN = styled.button`
 
 export const StyledCDPopup = styled.div`
   position: fixed;
-  z-index: 11;
+  z-index: 999;
   left: 0;
   top: 0;
   height: 100%;
@@ -55,7 +55,7 @@ export const StyledCDContainer = styled.div`
   position: absolute;
   width: 85vw;
   height: 90vh;
-  z-index: 909809890;
+  z-index: 9999;
   top: 50%;
   left: 50%;
   overflow: hidden;

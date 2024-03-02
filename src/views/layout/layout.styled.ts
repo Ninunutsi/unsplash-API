@@ -11,10 +11,9 @@ export const StyledHeader = styled.header`
 export const StyledNav = styled.nav`
 width: 100%;
 font-size: 30px;
-position: fixed;
+position: relative;
 left: 0;
 top: 0;
-z-index: 9;
 background-color: var(--clr-background-black);
 display: flex;
 margin: auto;

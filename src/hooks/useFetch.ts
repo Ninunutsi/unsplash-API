@@ -20,7 +20,6 @@ const useFetch = (searchQuery: string | undefined, historyQuery?:string): [Unspl
       let res
       const currentHistoryQuery = historyQueryRef.current;
       if(searchQuery){
-          console.log('search')
           const cachedData = queryClient.getQueryData(['img', searchQuery, page]);
         if (cachedData) {
           res = cachedData;
@@ -29,10 +28,8 @@ const useFetch = (searchQuery: string | undefined, historyQuery?:string): [Unspl
           queryClient.setQueryData(['img', searchQuery, page], res);
         }
       }else if(currentHistoryQuery){
-          console.log("historu")
           res = await searchImages(currentHistoryQuery, page)
       }else{
-          console.log("aq>?")
           res = await getImagesByPage(page)
         }
       const response = res

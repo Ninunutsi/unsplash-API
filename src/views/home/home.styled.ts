@@ -2,9 +2,9 @@ import styled from "styled-components";
 
 export const StyledScrollDiv = styled.main`
     overflow: auto;
-    margin-top: 10vh;
+    margin-top: 2vh;
     position: relative;
-    z-index: 7;
+    z-index: 1;
 `
 
 export const StyledLoading = styled.p`

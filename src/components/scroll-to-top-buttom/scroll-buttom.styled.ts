@@ -6,7 +6,7 @@ export const StyledScrollButton = styled.button`
     padding: 10px;
     background-color: var(--clr-background-black);
     color: green;
-    z-index: 909090;
+    z-index: 9999;
     bottom: 7rem;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
     color: var(--clr-white);

@@ -3,27 +3,14 @@ import { StyledImg, StyledLi, StyledUl } from './gallery.styled'
 import { Modal } from '../modal';
 import { ScrollToTopButton } from '../scroll-to-top-buttom';
 import { useValuesContext } from '../../context/valuesContext';
-  interface UnsplashImage {
-    id: string;
-    urls: {
-      regular: string;
-      full: string
-    };
-    likes: number
-  }
-
-  interface IGallery {
-    images: UnsplashImage[]
-    handleClick: (id: string, full: string, likes: number) => void
-  }
+import { IGallery } from '../../interfaces/app.interface';
 
 export const Gallery:React.FC<IGallery> = ({images, handleClick}) => {
   const { singlePhoto, modal,handleCloseModal} = useValuesContext()
-
   return (
     <>
       {modal && <Modal onClick={handleCloseModal} data={singlePhoto}/>}
-            {!modal && <ScrollToTopButton/>}
+       <ScrollToTopButton/>
     <StyledUl>
           {images.map(({ id, urls: { regular, full }, likes }, index) => (
             // To make sure keys are unique

@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const StyledHistoryHeading = styled.main`
 text-align: center;
-margin-top: 11vh;
+margin-top: 2vh;
 font-size: var(--fs-h3);
 color: var(--clr-white);
 padding: 4rem;
@@ -20,6 +20,11 @@ a:hover{
     color: var(--clr-white);
     transition: 0.5s ease-out;
 }
+`
+
+export const StyledGalleryDiv = styled.div`
+    font-size: 1rem;
+    text-align: left;
 `
 
 export const StyledHistoryContainer = styled.main`
