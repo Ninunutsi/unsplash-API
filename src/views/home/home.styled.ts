@@ -2,13 +2,16 @@ import styled from "styled-components";
 
 export const StyledScrollDiv = styled.main`
     overflow: auto;
-    position: absolute;
+    /* position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     z-index: 7;
     left: 0;
-    padding-top: 10vh;
+    padding-top: 10vh; */
+    margin-top: 10vh;
+    position: relative;
+    z-index: 7;
 `
 
 export const StyledUl = styled.ul`

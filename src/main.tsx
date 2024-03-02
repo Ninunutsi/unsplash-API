@@ -6,12 +6,14 @@ import { Layout } from './views/layout'
 import { History } from './views/history'
 import { Home } from './views/home'
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ValuesProvider } from './context/valuesContext'
 
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <>
     <GlobalStyle/>
     <QueryClientProvider client={queryClient}>
+    <ValuesProvider>
     <BrowserRouter>
     <Routes>
       <Route path='/' element={<Layout/>}>
@@ -21,6 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Route path='*' element={<NotFound />}/>
     </Routes>
     </BrowserRouter>
+    </ValuesProvider>
     </QueryClientProvider>
     </>
 )

@@ -1,39 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { StyledScrollButton } from './scroll-buttom.styled';
 
-interface MyComponentProps {
-    scrollRef: React.RefObject<HTMLDivElement>;
-  }
-
-export const ScrollToTopButton: React.FC<MyComponentProps> = ({scrollRef}) => {
+export const ScrollToTopButton: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!scrollRef.current) return;
-      const scrollY = scrollRef.current.scrollTop;
+      const scrollY = window.scrollY;
       const isVisible = scrollY > 100;
       setIsVisible(isVisible);
     };
 
-    if (scrollRef.current) {
-      scrollRef.current.addEventListener('scroll', handleScroll);
-    }
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
-      if (scrollRef.current) {
-        scrollRef.current.removeEventListener('scroll', handleScroll);
-      }
+      window.removeEventListener('scroll', handleScroll);
     };
-  }, [scrollRef]);
+  }, []);
 
   const scrollToTop = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    }
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
 
   return (
@@ -45,4 +34,3 @@ export const ScrollToTopButton: React.FC<MyComponentProps> = ({scrollRef}) => {
     </StyledScrollButton>
   );
 };
-

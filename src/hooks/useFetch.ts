@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { searchImages, getImagesByPage } from '../api/api';
 import { debounce } from "lodash";
+import { useValuesContext } from '../context/valuesContext';
 
 interface UnsplashImage {
   id: string;
@@ -14,7 +15,9 @@ interface UnsplashImage {
 const useFetch = (searchQuery: string): [UnsplashImage[], boolean, () => void] => {
   const [images, setImages] = useState<UnsplashImage[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(1);
+  // const [page, setPage] = useState<number>(1);
+  const {page, setPage} = useValuesContext()
+
   
   const fetchImages = async () => {
     setLoading(true);

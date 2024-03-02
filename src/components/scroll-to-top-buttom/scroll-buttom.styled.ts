@@ -4,7 +4,7 @@ export const StyledScrollButton = styled.button`
     position: fixed;
     right: 7rem;
     padding: 10px;
-    background-color: aliceblue;
+    background-color: var(--clr-background-black);
     color: green;
     z-index: 909090;
     bottom: 7rem;

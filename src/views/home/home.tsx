@@ -6,6 +6,7 @@ import { getOneImage} from "../../api/api";
 import { ScrollToTopButton } from "../../components/scroll-to-top-buttom";
 import { useQueryClient } from "react-query";
 import { debounce } from "lodash";
+import { useValuesContext } from "../../context/valuesContext";
 
 interface ImageData {
   downloads: {
@@ -24,7 +25,8 @@ interface ISinglePhoto {
 }
 
 export const Home: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const {searchQuery, setSearchQuery} = useValuesContext()
+  // const [searchQuery, setSearchQuery] = useState<string>('');
   const [images, loading, fetchImages] = useFetch(searchQuery);
   const iScrollRef = useRef<HTMLDivElement>(null);
   const [modal, setModal] = useState<boolean>(false);
@@ -62,26 +64,43 @@ export const Home: React.FC = () => {
     setModal(false);
   };
 
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (
+  //       iScrollRef.current &&
+  //       iScrollRef.current.scrollTop + iScrollRef.current.clientHeight >=
+  //         iScrollRef.current.scrollHeight - 30 &&
+  //       !loading
+  //     ) {
+  //       fetchImages();
+  //     }
+  //   };
+
+  //   if (iScrollRef.current) {
+  //     iScrollRef.current.addEventListener('scroll', handleScroll);
+  //   }
+
+  //   return () => {
+  //     if (iScrollRef.current) {
+  //       iScrollRef.current.removeEventListener('scroll', handleScroll);
+  //     }
+  //   };
+  // }, [loading, fetchImages]);
+
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = debounce(() => {
       if (
-        iScrollRef.current &&
-        iScrollRef.current.scrollTop + iScrollRef.current.clientHeight >=
-          iScrollRef.current.scrollHeight - 30 &&
+        window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 300 &&
         !loading
       ) {
         fetchImages();
       }
-    };
+    }, 200);
 
-    if (iScrollRef.current) {
-      iScrollRef.current.addEventListener('scroll', handleScroll);
-    }
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
-      if (iScrollRef.current) {
-        iScrollRef.current.removeEventListener('scroll', handleScroll);
-      }
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [loading, fetchImages]);
 
@@ -123,8 +142,8 @@ export const Home: React.FC = () => {
   return (
     <>
         {modal && <Modal onClick={handleCloseModal} data={singlePhoto}/>}
-      <StyledScrollDiv ref={iScrollRef}>
-        {!modal && <ScrollToTopButton scrollRef={iScrollRef}/>}
+      <StyledScrollDiv>
+        {!modal && <ScrollToTopButton/>}
         <StyledLabel>
           <StyledInput type="text" placeholder="Search images" value={searchQuery} onChange={handleSearch} />
         </StyledLabel>
@@ -132,7 +151,7 @@ export const Home: React.FC = () => {
           {images.map(({ id, urls: { regular, full }, likes }, index) => (
             // To make sure keys unique
             <StyledLi key={`${id}-${index}`}>
-              <StyledImg src={regular} alt={`Image ${id}`} onClick={() => handleClick(id, full, likes)}/>
+              <StyledImg src={regular} alt={`Image ${id}`} onClick={() => handleClick(id, full, likes)} />
             </StyledLi>
           ))}
         </StyledUl>
@@ -141,5 +160,3 @@ export const Home: React.FC = () => {
     </>
   );
 };
-
-
