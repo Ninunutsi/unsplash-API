@@ -5,22 +5,25 @@ import {  useValuesContext } from "../../context/valuesContext"
 import useFetch from "../../hooks/useFetch"
 import useInfiniteScroll from "../../hooks/useInfiniteScroll"
 import { Gallery } from "../../components/gallery"
+import { debounce } from "lodash"
 
 export const History = () => {
   const [isQuery, setIsQuery] = useState(localStorage.getItem('searchQueries'))
   const items = JSON.parse(localStorage.getItem('searchQueries') || '[]')
   const {searchQuery, setSearchQuery, handleClick, historyQuery, setHistoryQuery, page} = useValuesContext()
-  // const [historyQuery, setHistoryQuery] = useState<string>("")
   const [images, loading, fetchImages] = useFetch(undefined, historyQuery);
+  
 
   // custom hook for infinite scrolling
   useInfiniteScroll(fetchImages, loading);
   
-  const handleQueryClick = async (query: string) => {
+  const handleQueryClick = (query: string) => {
     setHistoryQuery(query)
+    const debouncedFetch = debounce(fetchImages, 1000)
+    debouncedFetch()
   }
-  useEffect(() => {
-  }, [historyQuery])
+
+
   return (
   <>
   <StyledHistoryHeading>

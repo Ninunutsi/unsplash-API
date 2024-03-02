@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { searchImages, getImagesByPage, useSearchImages } from '../api/api';
+import { useState, useEffect, useRef } from 'react';
+import { searchImages, getImagesByPage } from '../api/api';
 import { useValuesContext } from '../context/valuesContext';
 import { UnsplashImage } from '../interfaces/app.interface';
 import { useQueryClient } from 'react-query';
@@ -9,11 +9,16 @@ const useFetch = (searchQuery: string | undefined, historyQuery?:string): [Unspl
   const [loading, setLoading] = useState<boolean>(false);
   const {page, setPage} = useValuesContext()
   const queryClient = useQueryClient();
-console.log(historyQuery)
+  console.log(historyQuery)
+  const historyQueryRef = useRef<string | undefined>(historyQuery);
+  useEffect(() => {
+    historyQueryRef.current = historyQuery; // Update the ref whenever historyQuery changes
+  }, [historyQuery]);
   const fetchImages = async () => {
     setLoading(true);
     try {
       let res
+      const currentHistoryQuery = historyQueryRef.current;
       if(searchQuery){
           console.log('search')
           const cachedData = queryClient.getQueryData(['img', searchQuery, page]);
@@ -22,8 +27,12 @@ console.log(historyQuery)
         } else {
           res = await searchImages(searchQuery, page);
           queryClient.setQueryData(['img', searchQuery, page], res);
-        }}else{
-          console.log("arcertu")
+        }
+      }else if(currentHistoryQuery){
+          console.log("historu")
+          res = await searchImages(currentHistoryQuery, page)
+      }else{
+          console.log("aq>?")
           res = await getImagesByPage(page)
         }
       const response = res
@@ -43,7 +52,7 @@ console.log(historyQuery)
   useEffect(() => {
     setImages([]);
     setPage(1); 
-  }, [searchQuery]);
+  }, [searchQuery, historyQuery]);
 
   return [images, loading, fetchImages];
 };
