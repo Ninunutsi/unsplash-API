@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import useFetch from "../../hooks/useFetch";
 import { StyledImg, StyledInput, StyledLabel, StyledLi, StyledLoading, StyledScrollDiv, StyledUl } from "./home.styled";
 import { Modal } from "../../components/modal";
@@ -7,6 +7,7 @@ import { ScrollToTopButton } from "../../components/scroll-to-top-buttom";
 import { useQueryClient } from "react-query";
 import { debounce } from "lodash";
 import { useValuesContext } from "../../context/valuesContext";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 
 interface ImageData {
   downloads: {
@@ -26,20 +27,19 @@ interface ISinglePhoto {
 
 export const Home: React.FC = () => {
   const {searchQuery, setSearchQuery} = useValuesContext()
-  // const [searchQuery, setSearchQuery] = useState<string>('');
   const [images, loading, fetchImages] = useFetch(searchQuery);
-  const iScrollRef = useRef<HTMLDivElement>(null);
   const [modal, setModal] = useState<boolean>(false);
   const [singlePhoto, setSinglePhoto] = useState<ISinglePhoto | undefined>(undefined)
 
   const queryClient = useQueryClient();
+  useInfiniteScroll(fetchImages, loading);
 
   useEffect(() => {
     const initialLoadDelay = searchQuery ? 1000 : 0;
     const debouncedFetchImages = debounce(fetchImages, initialLoadDelay);
     debouncedFetchImages(); // Call the debounced function
   
-    let timer: NodeJS.Timeout | null = null;
+    let timer: number = 0;
   
     if (searchQuery) {
       const saveQueryAfterDelay = () => {
@@ -65,44 +65,21 @@ export const Home: React.FC = () => {
   };
 
   // useEffect(() => {
-  //   const handleScroll = () => {
+  //   const handleScroll = debounce(() => {
   //     if (
-  //       iScrollRef.current &&
-  //       iScrollRef.current.scrollTop + iScrollRef.current.clientHeight >=
-  //         iScrollRef.current.scrollHeight - 30 &&
+  //       window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 300 &&
   //       !loading
   //     ) {
   //       fetchImages();
   //     }
-  //   };
+  //   }, 200);
 
-  //   if (iScrollRef.current) {
-  //     iScrollRef.current.addEventListener('scroll', handleScroll);
-  //   }
+  //   window.addEventListener('scroll', handleScroll);
 
   //   return () => {
-  //     if (iScrollRef.current) {
-  //       iScrollRef.current.removeEventListener('scroll', handleScroll);
-  //     }
+  //     window.removeEventListener('scroll', handleScroll);
   //   };
   // }, [loading, fetchImages]);
-
-  useEffect(() => {
-    const handleScroll = debounce(() => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 300 &&
-        !loading
-      ) {
-        fetchImages();
-      }
-    }, 200);
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [loading, fetchImages]);
 
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
