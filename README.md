@@ -1,4 +1,8 @@
 
+## Live Deploy:
+
+https://main--lustrous-blancmange-090de9.netlify.app/
+
 ## Installation
 
 Clone the repository (you need to have Git installed).
@@ -13,10 +17,6 @@ Run the project.
 
     npm run dev
 
-
-## Live Deploy:
-
-https://main--lustrous-blancmange-090de9.netlify.app/
 
 ## Infinite Scroll Gallery with Unsplash API
 
