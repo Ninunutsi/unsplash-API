@@ -9,7 +9,7 @@ import { Gallery } from "../../components/gallery"
 import { debounce } from "lodash"
 
 export const History: React.FC = () => {
-  const [isQuery, setIsQuery] = useState(localStorage.getItem('searchQueries'))
+  const [isQuery] = useState(!!localStorage.getItem('searchQueries'));
   const items = JSON.parse(localStorage.getItem('searchQueries') || '[]')
   const { handleClick, historyQuery, setHistoryQuery} = useValuesContext()
   const [images, loading, fetchImages] = useFetch(undefined, historyQuery);
