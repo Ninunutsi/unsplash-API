@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import { StyledInput, StyledLabel, StyledLoading, StyledScrollDiv} from "./home.styled";
 import { debounce } from "lodash";
@@ -9,12 +9,18 @@ import { Gallery } from "../../components/gallery";
 export const Home: React.FC = () => {
   const {searchQuery, setSearchQuery, handleClick} = useValuesContext()
   const [images, loading, fetchImages] = useFetch(searchQuery);
+  const [debounceActive, setDebounceActive] = useState(false);
+
 
     useInfiniteScroll(fetchImages, loading);
 
   useEffect(() => {
     const initialLoadDelay = searchQuery ? 1000 : 0;
-    const debouncedFetchImages = debounce(fetchImages, initialLoadDelay);
+    const debouncedFetchImages = debounce(() => {
+      setDebounceActive(false); 
+      fetchImages();
+    }, initialLoadDelay);
+    setDebounceActive(true); 
     debouncedFetchImages(); // Call the debounced function
   
     let timer: number = 0;
@@ -49,7 +55,8 @@ export const Home: React.FC = () => {
           <StyledInput type="text" placeholder="Search images" value={searchQuery} onChange={handleSearch} />
         </StyledLabel>
         <Gallery images={images} handleClick={handleClick}/>
-        {loading && <StyledLoading className="loading">Loading More Images..</StyledLoading>}
+        {debounceActive && <StyledLoading className="loading">Loading..</StyledLoading>}
+        {loading && !debounceActive && <StyledLoading className="loading">Loading More Images..</StyledLoading>}
       </StyledScrollDiv>
     </>
   );

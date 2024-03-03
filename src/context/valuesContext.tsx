@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState } from "react";
 import { useQueryClient } from "react-query";
-import { ISinglePhoto, ImageData } from "../interfaces/app.interface";
+import { ISinglePhoto, IValuesContext, ImageData } from "../interfaces/app.interface";
 import { getOneImage } from "../api/api";
 
-const ValuesContext = createContext<any>(null);
+const ValuesContext = createContext<IValuesContext | any>(null);
 
 export const ValuesProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -14,7 +14,6 @@ export const ValuesProvider: React.FC<{ children: React.ReactNode }> = ({
     const [modal, setModal] = useState<boolean>(false);
     const queryClient = useQueryClient();
     const [historyQuery, setHistoryQuery] = useState<string>("")
-
 
     const handleClick = async (id: string, src: string, likes: number) => {
       // Check if data is already cached
@@ -58,5 +57,6 @@ export const ValuesProvider: React.FC<{ children: React.ReactNode }> = ({
     </ValuesContext.Provider>
   );
 };
+
 
 export const useValuesContext = () => useContext(ValuesContext);

@@ -1,57 +1,55 @@
+//QAIA
 import { useState, useEffect, useRef } from 'react';
 import { searchImages, getImagesByPage } from '../api/api';
 import { useValuesContext } from '../context/valuesContext';
 import { UnsplashImage } from '../interfaces/app.interface';
 import { useQueryClient } from 'react-query';
 
-const useFetch = (searchQuery: string | undefined, historyQuery?:string): [UnsplashImage[], boolean, () => void] => {
+const useFetch = (searchQuery: string | undefined, historyQuery?: string): [UnsplashImage[], boolean, () => void] => {
   const [images, setImages] = useState<UnsplashImage[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const {page, setPage} = useValuesContext()
+  const { page, setPage } = useValuesContext();
   const queryClient = useQueryClient();
   const historyQueryRef = useRef<string | undefined>(historyQuery);
-  const pageRef = useRef<number>(page)
-  console.log(page, "1")
-  console.log(pageRef)
+  const pageRef = useRef<number>(page);
+
   useEffect(() => {
-    pageRef.current = page; // Update pageRef.current whenever page changes
+    pageRef.current = page;
   }, [page]);
+
   useEffect(() => {
-    historyQueryRef.current = historyQuery; // Update the ref whenever historyQuery changes
+    historyQueryRef.current = historyQuery; 
   }, [historyQuery]);
+
   const fetchImages = async () => {
     setLoading(true);
     try {
-      let res
-      const currentHistoryQuery = historyQueryRef.current;
-      if(searchQuery){
-          const cachedData = queryClient.getQueryData(['img', searchQuery, pageRef.current]);
-        if (cachedData) {
-          res = cachedData;
-        } else {
+      let res;
+      const currentQuery = searchQuery || historyQueryRef.current;
+      const cacheKey = ['img', currentQuery, pageRef.current];
+      const cachedData = queryClient.getQueryData(cacheKey);
+
+      if (cachedData) {
+        res = cachedData;
+      } else {
+        if (searchQuery) {
           res = await searchImages(searchQuery, pageRef.current);
-          queryClient.setQueryData(['img', searchQuery, pageRef.current], res);
-        }
-      }else if(currentHistoryQuery){
-        const cachedData = queryClient.getQueryData(['img', currentHistoryQuery, pageRef.current]);
-        if (cachedData) {
-          res = cachedData;
+        } else if (historyQueryRef.current) {
+          res = await searchImages(historyQueryRef.current, pageRef.current);
         } else {
-          res = await searchImages(currentHistoryQuery, pageRef.current);
-          queryClient.setQueryData(['img', currentHistoryQuery, pageRef.current], res);
+          res = await getImagesByPage(pageRef.current);
         }
-      }else{
-          res = await getImagesByPage(pageRef.current)
-        }
-      const response = res
+        queryClient.setQueryData(cacheKey, res);
+      }
+
+      const response = res;
       if (pageRef.current === 1) {
         setImages(response);
       } else {
         setImages(prevImages => [...prevImages, ...response]);
       }
-      console.log(page, "trishi")
 
-      setPage((prevPage: number) => prevPage + 1);
+      setPage((prevPage:number) => prevPage + 1);
     } catch (error) {
       console.error('Error fetching images:', error);
     } finally {
@@ -61,12 +59,10 @@ const useFetch = (searchQuery: string | undefined, historyQuery?:string): [Unspl
 
   useEffect(() => {
     setImages([]);
-    setPage(1); 
-    console.log(page, "useEffectshi")
+    setPage(1);
   }, [searchQuery, historyQuery]);
 
   return [images, loading, fetchImages];
 };
-
 
 export default useFetch;

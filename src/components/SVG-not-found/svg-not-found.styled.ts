@@ -51,9 +51,12 @@ export const Styledmsg = styled.div`
     border-radius: 0.5rem;
     color: var(--clr-background-black);
     background-color: var(--clr-white);
+    border: 1px solid var(--clr-white);
   }
   p span:hover {
-    color: var(--clr-purple);
+    background-color: transparent;
+    color: var(--clr-white);
+    transition: 0.5s ease-out;
   }
 `;
 

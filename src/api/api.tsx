@@ -1,8 +1,6 @@
-import axios, { AxiosResponse } from "axios";
-import { useQuery } from "react-query";
-import { ImageData } from "../interfaces/app.interface";
+import axios from "axios";
 
-const API_KEY = "zjiQzG9EyFaOHOw_WxfSfWOnM5JJdyVwR-z5FLevdRM"
+const API_KEY = "W1f5oCFfBmWeO-3lMM15YRi6s_Qpw4OM0gT6UjPtGjU"
 
 export const getOneImage = async (id: string) => {
     try {
@@ -15,10 +13,6 @@ export const getOneImage = async (id: string) => {
       }
 }
 
-export const useOneImage = (id: string) => {
-    return useQuery(['oneImage', id], () => getOneImage(id));
-};
-
 export const searchImages = async (query: string | undefined, page: number) => {
     try{
         const response = await axios.get(`https://api.unsplash.com/search/photos?page=${page}&query=${query}&per_page=20&order_by=popular&client_id=${API_KEY}`)
@@ -28,9 +22,6 @@ export const searchImages = async (query: string | undefined, page: number) => {
     }
 }
 
-export const useSearchImages = (query: string | undefined, page: number) => {
-    return useQuery(['searchImages', query, page], () => searchImages(query, page));
-};
 
 export const getImagesByPage = async (page:number) => {
     try {
@@ -39,8 +30,4 @@ export const getImagesByPage = async (page:number) => {
     } catch (error) {
         console.log(error)
     }
-};
-
-export const useImagesByPage = (page:number) => {
-    return useQuery(['imagesByPage', page], () => getImagesByPage(page));
 };

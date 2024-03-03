@@ -48,11 +48,20 @@ border: 1px solid transparent;
 padding: 0.4rem;
 color: var(--clr-background-black);
 font-size: 1.2rem;
+border: 1px solid var(--clr-white);
+
+&:hover{
+    background-color: var(--clr-background-black);
+    color: var(--clr-white);
+    transition: 0.5s;
+    
+}
 `
 
 export const StyledLoading = styled.p`
 text-align: center;
 font-size: 2rem;
 line-height: 2.7rem;
+color: var(--clr-white);
 margin: 0.4rem;
 `
