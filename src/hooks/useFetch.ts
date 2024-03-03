@@ -1,4 +1,3 @@
-//QAIA
 import { useState, useEffect, useRef } from 'react';
 import { searchImages, getImagesByPage } from '../api/api';
 import { useValuesContext } from '../context/valuesContext';
@@ -25,6 +24,7 @@ const useFetch = (searchQuery: string | undefined, historyQuery?: string): [Unsp
     setLoading(true);
     try {
       let res;
+      // cache data
       const currentQuery = searchQuery || historyQueryRef.current;
       const cacheKey = ['img', currentQuery, pageRef.current];
       const cachedData = queryClient.getQueryData(cacheKey);
