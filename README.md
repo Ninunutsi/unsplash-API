@@ -1,30 +1,69 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Installation
 
-Currently, two official plugins are available:
+Clone the repository (you need to have Git installed).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    git clone https://github.com/Ninunutsi/unsplash-API.git
 
-## Expanding the ESLint configuration
+Install dependencies of the project.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+    npm install
 
-- Configure the top-level `parserOptions` property like this:
+Run the project.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+    npm run dev
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+## Live Deploy:
+
+https://main--lustrous-blancmange-090de9.netlify.app/
+
+## Infinite Scroll Gallery with Unsplash API
+
+გამოყონებულია: 
+
+    "@types/lodash": "^4.14.202", 
+    "axios": "^1.6.7",
+    "lodash": "^4.17.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-query": "^3.39.3",
+    "react-router-dom": "^6.22.2",
+    "styled-components": "^6.1.8"
+
+lodash გამოვიყენე debounce ფუნქციის შემოტანისთვის
+
+axios გამოვიყენე დეითას წამოსაღებად
+
+react-query გამოვიყენე ქეშირებისთვის
+
+react-router-dom გამოვიყენე როუტების შესაქმნელად
+
+styled-components გამოვიყენე გასასტილად
+
+## Infinite Scroll 
+Infinite Scroll-ისთვის შექმნილია custom hook, რომელიც სქროლისა და ეკრანის სიმაღლის მიხედვით იძახებს დეითას წამოსაღებ ფუნქციას. რადგანაც ორივე, home და history, გვერდებისთვის მჭირდებოდა იგივე ფუნქციონალი, ერთი ჰუკის შექმნით გადავცემ შესაბამის გვერდზე შესაბამის პარამეტრებს და იმის მიხედვით სქროლის პოზიციის შესაბამისად ჩნდება დეითა.
+
+## useFetch
+დეითას წამოსაღებად შექმნილია custom hook, რომელიც შესაბამისი პარამეტრების მიხედვით აბრუნებს უკვე დაქეშილ მონაცემებს. დეითას წამოსაღებად გამოყენებულია axios.
+
+## React Query
+დასაქეშ მექანიზმად გამოყენებულია React Query. useFetch ჰუკში უკვე დაქეშილი დეითა მოდის და თუ რექვესთები მეორდება, რექვესთი სერვერზე აღარ იგზავნება. ამისთვის გამოყენებულია queryClient და QueryClientProvider. რექვესთის გაკეთების დროს შესაბამის key-ზე ემატება შესაბამისი მონაცემები და განმეორების შემთხვევაში დეითა მოდის ქეშიდან. ანალოგიურად არის დაქეშილი ცალკე ერთი ფოტოს გახსნაც მოდალში. თუ ფოტოს მონაცემები ქეშში არის შენახული რექვესთი აღარ კეთდება. 
+
+## Debounce
+Debounce ფუნქციონალი გამოყენებულია იმისთვის რომ ყველა key stroke-ზე რექვესთის გაგზავნა არ ხდებოდეს ეგრევე. აპლიკაციაში რექვესთი იგზავნება ასოს დაწერიდან ერთ წამში. ამის გამო ბექი არ ისპამება ზედმეტი რექვესთებით და საბოლოოდ რექვესთი მიდის ერთი სიტყვის სახით.
+იგივენაირად ინახება ლოკალ სტორიჯში მოძებნილი სიტყვები ერთი წამის შემდეგ, რათა აქაც ყველა ასო ცალცალკე შენახვა არ მომხდარიყო.
+
+## Values Context
+იქედან გამომდინარე რომ ორივე გვერდს ძირითადი ფუნქციონალი საერთო აქვთ, გადავწყვიტე გამომეყენებინა კონტექსტი ერთი და იგივე კოდის წერის თავიდან აცილების მიზნით. კონტექსტში გაერთიანებულია ყველა ის მნიშვნელობა და ფუნქცია რაც საერთოა home და history გვერდებისთვის.
+
+## Home 
+ამ ფეიჯზე არის საძიებო თეგი. გვერდის გახსნის დროს დეფოლთად მოდის დეითა რომელიც დასორტილია პოპულარობის მიხედვით. საძიებო თეგს არ აქვს დასაბმითების ღილაკი, შესაბამისად, ყველა ასოს ჩაწერის დროს ერთი წამის შემდეგ იფილტრება დეითა. 
+
+## history
+ამ გვერდზე ჩანს უკვე მოძებნილი სიტყვები. ეს სიტყვები შენახულია ლოკალ სტორიჯში. ლოკალ სტორიჯში შენახვის დროს მოწმდება მეორდება თუ არა მოძებნილი სიტყვა. თუ არ მეორდება მხოლოდ იმ შემთხვევაში ვინახავ. რომელიმე სიტყვაზე დაჭერის შემთხვევაში, ამავე ფეიჯზე იგზავნება რექვესთი შესაბამისი პარამეტრებით და აქვე ჩნდება წამოღებული დეითა. ჰოუმის მსგავსად ისტორიის გვერდზედ გამოყენებულია Infinite Scroll, ფოტოზე დაჭერის შემდგომ ფოტოს მოდალში გახსნის ფუნქციონალი და ქეშირების მექანიზმი. 
+
+## აპლიკაციის დამატებითი ფუნქციონალი
+ჩამოსქროლვის დროს ჩნდება ზემოთ ასასქროლი ღილაკი, რომელზე დაჭერის შემთხვევაში ისქროლება ზემოთ.
+დამატებულია wildcard როუტი, რომელიც არასწორი ურლ ის მითითების შემთხვევაში მთავარ გვერდზე გადამისამართების საშუალებას იძლევა
+
